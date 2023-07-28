@@ -1,0 +1,21 @@
+* {
+    font-family: "Inter";
+}
+#bApp {
+    opacity: 0;
+    transition: 400ms ease opacity;
+}
+
+#bApp.app-ready {
+    opacity: 1;
+}
+
+#bApp {
+}
+#bApp [data-dynamic-state] {
+    display: none;
+}
+
+#bApp [data-dynamic-state][data-transferred] {
+    display: inherit;
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./src/css/reset.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ========== Start bApp ========== -->
+    <section id="bApp" class="bApp position-relative wrapper-section">
+        <div class="container">
+            <div class="py-5">
+                <div>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <h1 class="fw-bold">VanillaJS State</h1>
+                        </div>
+                        <!-- Tekli Veri -->
+                        <div class="col-lg-6">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Name1 : ${name1}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tekli Veri -->
+                        <div class="col-lg-6">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Name2 : ${name2}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Çoklu Veri -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Name 1, Name 2, Tarih : ${name1} - ${name2} - ${date}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tarih -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Tarih : ${date}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Two-way binding -->
+                        <div class="col-12">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="name1" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                        <label for="floatingInput">name1</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="name2" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                        <label for="floatingInput">name2</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button id="btn2" class="btn btn-dark">Tarihi Güncel Tarih ile Değiştir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Counter -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Count: ${count}</p>
+                                    <div class="mt-2">
+                                        <button id="inc" class="btn btn-dark">Arttır</button>
+                                        <button id="dec" class="btn btn-dark">Azalt</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Dinamik Veri -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Dinamik Veri: <p data-dynamic-state>${test}</p></p>
+                                    <button id="btn3" class="btn btn-dark mt-2">Veriyi Getir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ========== End bApp ========== -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js" integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./src/js/script.js"></script>
+</body>
+
+</html>
