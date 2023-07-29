@@ -1,6 +1,9 @@
-class StatefulUIManager {
+export class StatefulUIManager {
     constructor(containerId, initialState) {
         this.containerElement = document.getElementById(containerId);
+        if (!this.containerElement) {
+            throw 'bApp Uygulaması Başlatılamadı';
+        }
         this.state = { ...initialState };
         this.resultElements = this.findElementsWithStatePlaceholder();
 
@@ -11,9 +14,8 @@ class StatefulUIManager {
                 return true;
             }
         });
-        console.log('<<< Vayes Module : StatefulUIManager >>>');
-
         this.updateUI();
+        this.init();
     }
 
     findElementsWithStatePlaceholder() {
@@ -23,7 +25,7 @@ class StatefulUIManager {
             const { TEXT_NODE, ELEMENT_NODE } = Node;
 
             if (element.nodeType === TEXT_NODE) {
-                const pattern = /\${\s*([^{}]+)\s*}/g;
+                const pattern = /\${(?:html:)?\s*([^{}]+)\s*}/g;
                 const matches = element.nodeValue.match(pattern);
                 if (matches) {
                     elementsWithStatePlaceholder.push({
@@ -52,25 +54,46 @@ class StatefulUIManager {
             let contentUpdated = false;
 
             for (const placeholder of elementInfo.placeholders) {
-                const value = placeholder.slice(2, -1).trim();
+                const pattern = /\${\s*html\s*:\s*(.*?)\s*}/;
+                const isHtmlPlaceholder = placeholder.match(pattern);
+
+                const value = isHtmlPlaceholder ? this.extractHtmlValue(placeholder.trim()) : placeholder.slice(2, -1).trim();
+                console.log(value);
+
                 if (value in this.state) {
                     const updatedValue = this.state[value];
                     updatedText = updatedText.replace(placeholder, updatedValue);
                     contentUpdated = true;
                 } else {
-                    // Placeholder'ın eşleştiği değer state içinde yoksa, placeholder'ı boş bir metinle değiştir.
                     updatedText = updatedText.replace(placeholder, "");
                 }
             }
 
             if (contentUpdated) {
-                elementInfo.element.textContent = updatedText;
+                elementInfo.element.innerHTML = updatedText; // Use innerHTML instead of textContent
                 elementInfo.element.dataset.transferred = true;
             }
         }
 
         const endTime = performance.now();
         console.log("Arayüzün güncellenmesi " + Math.round(endTime - startTime) + " milisaniye sürdü");
+    }
+
+    extractHtmlValue(input) {
+        const regex = /\${\s*html\s*:\s*(.*?)\s*}/;
+        const match = input.match(regex);
+        if (match) {
+            return match[1];
+        }
+        return null;
+    }
+
+    init() {
+        let _self = this;
+        window.addEventListener("DOMContentLoaded", () => {
+            _self.containerElement.classList.add('app-ready');
+            _self.containerElement.dataset.appReady = true;
+        });
     }
 }
 
