@@ -79,24 +79,24 @@ document.querySelector('#btn3').addEventListener('click', function (e) {
 ### Constructor (constructor)
 Parametreler:
 
-containerId: UI'nin yer alacağı konteynerin ID'si.
-initialState: Başlangıç durumu.
-computedStateConfig: Hesaplanmış durumlar için konfigürasyon.
+- containerId: UI'nin yer alacağı konteynerin ID'si.
+- initialState: Başlangıç durumu.
+- computedStateConfig: Hesaplanmış durumlar için konfigürasyon.
 
 İşlem:
 
-containerElement: containerId ile belirtilen HTML öğesini bulur.
-state: Başlangıç durumu initialState ile initialize edilir.
-computedStateConfig: Hesaplanmış durum konfigürasyonları initialize edilir.
-resultElements: findElementsWithStatePlaceholder metodunu çağırarak, duruma bağlı placeholder'ları içeren öğeleri bulur.
-placeholderMap: createPlaceholderMap metodunu çağırarak placeholder'ları bir haritada organize eder.
-proxyState: Proxy kullanarak durumu yönetir ve durum değişikliklerinde UI'yi otomatik olarak günceller.
-updateComputedProperties ve updateUI: Başlangıçta hesaplanmış durumları ve UI'yi günceller.
-init: Sınıfı başlatır ve gerekli olay dinleyicilerini ekler.
+- containerElement: containerId ile belirtilen HTML öğesini bulur.
+- state: Başlangıç durumu initialState ile initialize edilir.
+- computedStateConfig: Hesaplanmış durum konfigürasyonları initialize edilir.
+- resultElements: findElementsWithStatePlaceholder metodunu çağırarak, duruma bağlı placeholder'ları içeren öğeleri bulur.
+- placeholderMap: createPlaceholderMap metodunu çağırarak placeholder'ları bir haritada organize eder.
+- proxyState: Proxy kullanarak durumu yönetir ve durum değişikliklerinde UI'yi otomatik olarak günceller.
+- updateComputedProperties ve updateUI: Başlangıçta hesaplanmış durumları ve UI'yi günceller.
+- init: Sınıfı başlatır ve gerekli olay dinleyicilerini ekler.
 
 ### findElementsWithStatePlaceholder
 İşlem:
-containerElement içindeki tüm metin düğümlerini (TEXT_NODE) ve HTML düğümlerini (ELEMENT_NODE) tarar.
+- containerElement içindeki tüm metin düğümlerini (TEXT_NODE) ve HTML düğümlerini (ELEMENT_NODE) tarar.
 ${} formatında placeholder'lar içeren metin düğümlerini bulur ve elementsWithStatePlaceholder dizisine ekler.
 
 ### createPlaceholderMap
@@ -109,7 +109,7 @@ Placeholder'dan duruma ait anahtarı (state key) çıkarır. Eğer placeholder h
 
 ### updateUI
 Parametreler:
-changedProperty: Değişen durum anahtarı (opsiyonel).
+- changedProperty: Değişen durum anahtarı (opsiyonel).
 
 İşlem:
 Eğer belirli bir durum anahtarı değişmişse, sadece o anahtara bağlı öğeleri günceller.
@@ -123,7 +123,7 @@ Placeholder'dan html: içeren değeri çıkarır ve döndürür.
 
 ### updateComputedProperties
 Parametreler:
-changedProperty: Değişen durum anahtarı (opsiyonel).
+- changedProperty: Değişen durum anahtarı (opsiyonel).
 
 İşlem:
 computedStateConfig'de tanımlı her bir hesaplanmış durumu günceller. Eğer changedProperty belirtilmişse, sadece bu anahtara bağlı olan hesaplanmış durumları günceller.
