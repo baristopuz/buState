@@ -17,6 +17,7 @@ class StatefulUIManager {
                 return true;
             }
         });
+        
         this.updateComputedProperties();
         this.updateUI();
         this.init();
