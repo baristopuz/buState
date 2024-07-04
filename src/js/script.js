@@ -1,19 +1,23 @@
-export class StatefulUIManager {
-    constructor(containerId, initialState) {
+class StatefulUIManager {
+    constructor(containerId, initialState, computedStateConfig = {}) {
         this.containerElement = document.getElementById(containerId);
         if (!this.containerElement) {
             throw 'bApp Uygulaması Başlatılamadı';
         }
         this.state = { ...initialState };
+        this.computedStateConfig = computedStateConfig;
         this.resultElements = this.findElementsWithStatePlaceholder();
+        this.placeholderMap = this.createPlaceholderMap();
 
         this.proxyState = new Proxy(this.state, {
             set: (target, property, value) => {
                 target[property] = value;
-                this.updateUI();
+                this.updateComputedProperties(property);
+                this.updateUI(property);
                 return true;
             }
         });
+        this.updateComputedProperties();
         this.updateUI();
         this.init();
     }
@@ -46,31 +50,88 @@ export class StatefulUIManager {
         return elementsWithStatePlaceholder;
     }
 
-    updateUI() {
-        const startTime = performance.now();
+    createPlaceholderMap() {
+        const placeholderMap = {};
 
         for (const elementInfo of this.resultElements) {
-            let updatedText = elementInfo.originalText;
-            let contentUpdated = false;
-
             for (const placeholder of elementInfo.placeholders) {
-                const pattern = /\${\s*html\s*:\s*(.*?)\s*}/;
-                const isHtmlPlaceholder = placeholder.match(pattern);
-
-                const value = isHtmlPlaceholder ? this.extractHtmlValue(placeholder.trim()) : placeholder.slice(2, -1).trim();
-                console.log(value);
-
-                if (value in this.state) {
-                    const updatedValue = this.state[value];
-                    updatedText = updatedText.replace(placeholder, updatedValue);
-                    contentUpdated = true;
-                } else {
-                    updatedText = updatedText.replace(placeholder, "");
+                const key = this.extractStateKey(placeholder);
+                if (key) {
+                    if (!placeholderMap[key]) {
+                        placeholderMap[key] = [];
+                    }
+                    placeholderMap[key].push(elementInfo);
                 }
             }
+        }
 
-            if (contentUpdated) {
-                elementInfo.element.innerHTML = updatedText; // Use innerHTML instead of textContent
+        return placeholderMap;
+    }
+
+    extractStateKey(placeholder) {
+        const isHtmlPlaceholder = placeholder.match(/\${\s*html\s*:\s*(.*?)\s*}/);
+        const value = isHtmlPlaceholder ? this.extractHtmlValue(placeholder.trim()) : placeholder.slice(2, -1).trim();
+        return value;
+    }
+
+    updateUI(changedProperty = null) {
+        const startTime = performance.now();
+
+        if (changedProperty && this.placeholderMap[changedProperty]) {
+            const affectedElements = this.placeholderMap[changedProperty];
+
+            for (const elementInfo of affectedElements) {
+                let updatedText = elementInfo.originalText;
+                let isHtmlState = false;
+
+                for (const placeholder of elementInfo.placeholders) {
+                    const isHtmlPlaceholder = placeholder.match(/\${\s*html\s*:\s*(.*?)\s*}/);
+                    const value = isHtmlPlaceholder ? this.extractHtmlValue(placeholder.trim()) : placeholder.slice(2, -1).trim();
+
+                    if (isHtmlPlaceholder) isHtmlState = true;
+
+                    if (value in this.state) {
+                        const updatedValue = this.state[value];
+                        updatedText = updatedText.replace(placeholder, updatedValue);
+                    } else {
+                        updatedText = updatedText.replace(placeholder, "");
+                    }
+                }
+
+                if (isHtmlState) {
+                    elementInfo.element.innerHTML = updatedText;
+                } else {
+                    elementInfo.element.childNodes[0].nodeValue = updatedText;
+                }
+
+                elementInfo.element.dataset.transferred = true;
+            }
+        } else if (!changedProperty) {
+            // Full update if no specific property is changed
+            for (const elementInfo of this.resultElements) {
+                let updatedText = elementInfo.originalText;
+                let isHtmlState = false;
+
+                for (const placeholder of elementInfo.placeholders) {
+                    const isHtmlPlaceholder = placeholder.match(/\${\s*html\s*:\s*(.*?)\s*}/);
+                    const value = isHtmlPlaceholder ? this.extractHtmlValue(placeholder.trim()) : placeholder.slice(2, -1).trim();
+
+                    if (isHtmlPlaceholder) isHtmlState = true;
+
+                    if (value in this.state) {
+                        const updatedValue = this.state[value];
+                        updatedText = updatedText.replace(placeholder, updatedValue);
+                    } else {
+                        updatedText = updatedText.replace(placeholder, "");
+                    }
+                }
+
+                if (isHtmlState) {
+                    elementInfo.element.innerHTML = updatedText;
+                } else {
+                    elementInfo.element.childNodes[0].nodeValue = updatedText;
+                }
+
                 elementInfo.element.dataset.transferred = true;
             }
         }
@@ -88,6 +149,15 @@ export class StatefulUIManager {
         return null;
     }
 
+    updateComputedProperties(changedProperty = null) {
+        for (const [key, computeFunc] of Object.entries(this.computedStateConfig)) {
+            if (!changedProperty || computeFunc.dependencies.includes(changedProperty)) {
+                this.state[key] = computeFunc.compute(this.state);
+                this.updateUI(key);
+            }
+        }
+    }
+
     init() {
         let _self = this;
         window.addEventListener("DOMContentLoaded", () => {
@@ -101,10 +171,35 @@ const initialState = {
     name1: ["Ahmet", "Mehmet", "Ayşe", "Fatma", "Ali", "Zeynep", "Emre", "Ceren", "Can", "Elif"][Math.floor(Math.random() * 10)],
     name2: ["Ahmet", "Mehmet", "Ayşe", "Fatma", "Ali", "Zeynep", "Emre", "Ceren", "Can", "Elif"][Math.floor(Math.random() * 10)],
     date: new Date(),
-    count: 0
+    count: 0,
+    testHtml:'<div><a href="#">test html elemanı</a></div>',
+    number1: 5,
+    number2: 8,
+    number3: 0,
 };
 
-const statefulUI = new StatefulUIManager("bApp", initialState);
+const computedStateConfig = {
+    number3: {
+        dependencies: ['number1', 'number2'],
+        compute: (state) => anotherFuncx(state.number1, state.number2)
+    }
+};
+
+const statefulUI = new StatefulUIManager("bApp", initialState, computedStateConfig);
+
+function anotherFuncx(a, b) {
+    console.log(a,b);
+    return a + b;
+}
+
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+setTimeout(() => {
+    statefulUI.proxyState.number1= randomIntFromInterval(0, 50);
+}, 2000);
+
 
 window.addEventListener("DOMContentLoaded", (event) => {
     let bApp = document.getElementById("bApp");
@@ -148,6 +243,16 @@ function anotherFunc(){
         statefulUI.proxyState.test = 'Veri Güncellendi';
     }, 2000);
 }
+
+function generateRandomValue() {
+    // 0 ile 1 arasında rastgele bir değer üret
+    let randomValue = Math.random();
+    statefulUI.proxyState.name1=randomValue;
+  }
+  
+  // Her saniye (222 ms) generateRandomValue fonksiyonunu çağır
+//   setInterval(generateRandomValue, 222);
+  
 
 // setInterval(() => {
 //     let d = new Date();

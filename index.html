@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css"
+        integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./src/css/reset.css">
     <link rel="stylesheet" href="./src/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,13 +63,15 @@
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="text" name="name1" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                        <input type="text" name="name1" class="form-control" id="floatingInput"
+                                            placeholder="name@example.com">
                                         <label for="floatingInput">name1</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-floating mb-3">
-                                        <input type="text" name="name2" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                        <input type="text" name="name2" class="form-control" id="floatingInput"
+                                            placeholder="name@example.com">
                                         <label for="floatingInput">name2</label>
                                     </div>
                                 </div>
@@ -92,8 +96,39 @@
                         <div class="col-12">
                             <div class="shadow card">
                                 <div class="card-body">
-                                    <p>Dinamik Veri: <p data-dynamic-state>${test}</p></p>
+                                    <p>Dinamik Veri:
+                                    <p data-dynamic-state>${test}</p>
+                                    </p>
                                     <button id="btn3" class="btn btn-dark mt-2">Veriyi Getir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- HTML -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <p>Dinamik Veri:
+                                    <p data-dynamic-state>${html:testHtml}</p>
+                                    </p>
+                                    <p>Dinamik Veri:
+                                    <p data-dynamic-state>${html:testHtml}</p>
+                                    </p>
+                                    <p>Dinamik Veri:
+                                    <p data-dynamic-state>${html:testHtml}</p>
+                                    </p>
+                                    <p>Dinamik Veri:
+                                    <p data-dynamic-state>${html:testHtml}</p>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Zincir Değer Değiştirme -->
+                        <div class="col-12">
+                            <div class="shadow card">
+                                <div class="card-body">
+                                    <div>${number1}</div>
+                                    <div>${number2}</div>
+                                    <div>Toplam: ${number3}</div>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +139,9 @@
     </section>
     <!-- ========== End bApp ========== -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js" integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha512-ToL6UYWePxjhDQKNioSi4AyJ5KkRxY+F1+Fi7Jgh0Hp5Kk2/s8FD7zusJDdonfe5B00Qw+B8taXxF6CFLnqNCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./src/js/script.js"></script>
 </body>
 
