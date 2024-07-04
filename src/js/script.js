@@ -172,7 +172,7 @@ const initialState = {
     name2: ["Ahmet", "Mehmet", "Ayşe", "Fatma", "Ali", "Zeynep", "Emre", "Ceren", "Can", "Elif"][Math.floor(Math.random() * 10)],
     date: new Date(),
     count: 0,
-    testHtml:'<div><a href="#">test html elemanı</a></div>',
+    testHtml: '<div><a href="#">Html Elementi</a></div>',
     number1: 5,
     number2: 8,
     number3: 0,
@@ -181,31 +181,23 @@ const initialState = {
 const computedStateConfig = {
     number3: {
         dependencies: ['number1', 'number2'],
-        compute: (state) => anotherFuncx(state.number1, state.number2)
+        compute: (state) => sumState(state.number1, state.number2)
     }
 };
 
 const statefulUI = new StatefulUIManager("bApp", initialState, computedStateConfig);
 
-function anotherFuncx(a, b) {
-    console.log(a,b);
+function sumState(a, b) {
     return a + b;
 }
 
 function randomIntFromInterval(min, max) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+}
 
 setTimeout(() => {
-    statefulUI.proxyState.number1= randomIntFromInterval(0, 50);
+    statefulUI.proxyState.number1 = randomIntFromInterval(0, 50);
 }, 2000);
-
-
-window.addEventListener("DOMContentLoaded", (event) => {
-    let bApp = document.getElementById("bApp");
-    bApp.classList.add('app-ready');
-    bApp.dataset.appReady = true;
-});
 
 
 document.querySelector('input[name="name1"]').addEventListener('input', function (e) {
@@ -234,33 +226,4 @@ document.querySelector('#btn3').addEventListener('click', function (e) {
         .then(json => {
             statefulUI.proxyState.test = JSON.stringify(json);
         });
-        anotherFunc();
 });
-
-function anotherFunc(){
-    console.log('anotherFunc');
-    setTimeout(() => {
-        statefulUI.proxyState.test = 'Veri Güncellendi';
-    }, 2000);
-}
-
-function generateRandomValue() {
-    // 0 ile 1 arasında rastgele bir değer üret
-    let randomValue = Math.random();
-    statefulUI.proxyState.name1=randomValue;
-  }
-  
-  // Her saniye (222 ms) generateRandomValue fonksiyonunu çağır
-//   setInterval(generateRandomValue, 222);
-  
-
-// setInterval(() => {
-//     let d = new Date();
-//     statefulUI.proxyState.tarih = d.getTime();
-// }, 10);
-
-// let i = 0;
-// setInterval(() => {
-//     i++;
-//     statefulUI.proxyState.name1 = i;
-// }, 100);
